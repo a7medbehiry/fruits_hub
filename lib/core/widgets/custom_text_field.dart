@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fruits_hub/core/utils/app_colors.dart';
 import 'package:fruits_hub/core/utils/app_text_styles.dart';
 
 class CustomTextFormField extends StatelessWidget {
@@ -20,7 +19,7 @@ class CustomTextFormField extends StatelessWidget {
         suffixIcon: suffixIcon,
         hintText: hintText,
         hintStyle: TextStyles.bold13.copyWith(
-          color: AppColors.lightPrimaryColor,
+          color: const Color(0xFF949D9E),
         ),
         filled: true,
         fillColor: const Color(0xFFF9FAFA),
