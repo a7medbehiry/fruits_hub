@@ -5,7 +5,7 @@ class UserEntity {
 
   UserEntity({
     required this.email,
-    required this.password,
-    required this.uId,
+    required this.password, 
+    required this.uId, 
   });
 }
