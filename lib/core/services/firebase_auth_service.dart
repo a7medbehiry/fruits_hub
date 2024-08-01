@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fruits_hub/core/errors/exceptions.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class FirebaseAuthService {
   Future<User> createUserWithEmailAndPassword({
@@ -34,5 +35,49 @@ class FirebaseAuthService {
       throw CustomException(
           message: 'لقد حدث خطأ ما. الرجاء المحاولة مرة اخري.');
     }
+  }
+
+  Future<User> signInWithEmailAndPassword({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final credential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+      return credential.user!;
+    } on FirebaseAuthException catch (e) {
+      log('Exception in FirebaseAuthService.signInWithEmailAndPassword: $e and code is: ${e.code}');
+      if (e.code == 'user-not-found') {
+        throw CustomException(
+            message: 'البريد الالكتروني او كلمة المرور غير صحيح.');
+      } else if (e.code == 'wrong-password') {
+        throw CustomException(
+            message: 'البريد الالكتروني او كلمة المرور غير صحيح.');
+      } else if (e.code == 'network-request-failed') {
+        throw CustomException(message: 'تأكد من اتصالك بالانترنت.');
+      } else {
+        throw CustomException(
+            message: 'لقد حدث خطأ ما. الرجاء المحاولة مرة اخري.');
+      }
+    } catch (e) {
+      log('Exception in FirebaseAuthService.signInWithEmailAndPassword: $e');
+
+      throw CustomException(
+          message: 'لقد حدث خطأ ما. الرجاء المحاولة مرة اخري.');
+    }
+  }
+
+  Future<User> signInWithGoogle() async {
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
+
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+
+    return (await FirebaseAuth.instance.signInWithCredential(credential)).user!;
   }
 }
