@@ -88,6 +88,12 @@ class FirebaseAuthService {
     final OAuthCredential facebookAuthCredential =
         FacebookAuthProvider.credential(loginResult.accessToken!.tokenString);
 
-    return (await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential)).user!;
+    return (await FirebaseAuth.instance
+            .signInWithCredential(facebookAuthCredential))
+        .user!;
+  }
+
+  Future deleteUser() async {
+    await FirebaseAuth.instance.currentUser!.delete();
   }
 }

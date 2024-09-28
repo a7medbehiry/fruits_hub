@@ -110,7 +110,7 @@ class _SignInViewBodyState extends State<SignInViewBody> {
                 height: 16,
               ),
               Platform.isIOS
-                  ? Column(
+                ? Column(
                       children: [
                         SocialLoginButton(
                           onPressed: () {},
